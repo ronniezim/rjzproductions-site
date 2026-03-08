@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RonnieZ — DJ · Cycling · Podcast</title>
+<meta name="description" content="Mainstage energy for your toughest workouts. DJ mixes, indoor cycling classes, and the Music To Make You Stronger podcast.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,900;1,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00DAFF;
+    --gold: #EFD508;
+    --red: #CC3B12;
+    --bg: #060608;
+    --bg2: #0d0d10;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: linear-gradient(to bottom, rgba(6,6,8,0.95), transparent);
+    backdrop-filter: blur(0px);
+  }
+
+  .nav-logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cyan); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  .nav-cta {
+    background: var(--cyan);
+    color: #000 !important;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 900 !important;
+    letter-spacing: 2px !important;
+  }
+  .nav-cta:hover { background: #fff; color: #000 !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(0,218,255,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(239,213,8,0.04) 0%, transparent 60%),
+                linear-gradient(180deg, #060608 0%, #0a0a10 100%);
+  }
+
+  /* Animated waveform lines */
+  .hero-waves {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-right: 0;
+    overflow: hidden;
+  }
+
+  .wave-bar {
+    flex-shrink: 0;
+    width: 3px;
+    background: var(--cyan);
+    border-radius: 2px;
+    opacity: 0.15;
+    animation: wavePulse var(--dur) ease-in-out infinite alternate;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes wavePulse {
+    from { height: 10%; opacity: 0.08; }
+    to   { height: var(--h); opacity: 0.25; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-size: clamp(72px, 12vw, 160px);
+    font-weight: 900;
+    line-height: 0.88;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--cyan);
+    display: block;
+  }
+
+  .hero-title .outline {
+    -webkit-text-stroke: 2px rgba(255,255,255,0.2);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cyan);
+    color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,218,255,0.3); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border-radius: 4px;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+
+  .hero-stats {
+    position: absolute;
+    right: 40px;
+    bottom: 80px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1s;
+  }
+
+  .hero-stat {
+    text-align: right;
+  }
+
+  .hero-stat-num {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .hero-stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--gold);
+    color: #000;
+    padding: 12px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-flex;
+    animation: tickerScroll 30s linear infinite;
+    gap: 0;
+  }
+
+  .ticker-item {
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 0 40px;
+  }
+
+  .ticker-sep {
+    opacity: 0.3;
+  }
+
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 120px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -1px;
+    margin-bottom: 60px;
+  }
+
+  /* PHOTO PLACEHOLDER */
+  .photo-placeholder {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.2);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .photo-placeholder svg {
+    width: 48px;
+    height: 48px;
+    opacity: 0.2;
+  }
+
+  /* MIXES SECTION */
+  .mixes-section {
+    background: var(--bg2);
+    max-width: 100%;
+    padding: 120px 0;
+  }
+
+  .mixes-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .buzzsprout-embed {
+    background: #0d0d10;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .episode-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2px;
+    margin-top: 2px;
+  }
+
+  .episode-card {
+    background: #0d0d10;
+    border: 1px solid var(--border);
+    padding: 28px;
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+
+  .episode-card:hover {
+    background: rgba(0,218,255,0.04);
+    border-color: rgba(0,218,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .episode-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    margin-bottom: 10px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .episode-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .episode-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    gap: 16px;
+  }
+
+  .listen-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,218,255,0.3);
+    padding-bottom: 4px;
+    transition: all 0.2s;
+  }
+  .listen-all:hover { gap: 16px; border-color: var(--cyan); }
+
+  /* CYCLING SECTION */
+  .cycling-section {
+    position: relative;
+  }
+
+  .cycling-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .cycling-feature {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .cycling-feature:hover { border-color: rgba(239,213,8,0.3); }
+
+  .cycling-feature::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .cycling-feature:hover::before { transform: scaleX(1); }
+
+  .cycling-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .cycling-feature-title {
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+
+  .cycling-feature-text {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+  }
+
+  .cycling-cta {
+    margin-top: 60px;
+    padding: 60px;
+    background: linear-gradient(135deg, rgba(239,213,8,0.08) 0%, rgba(204,59,18,0.08) 100%);
+    border: 1px solid rgba(239,213,8,0.2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .cycling-cta-text {
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .cycling-cta-text span { color: var(--gold); }
+
+  /* ABOUT SECTION */
+  .about-section {
+    background: var(--bg2);
+    max-width: 100%;
+    padding: 120px 0;
+  }
+
+  .about-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-text p {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+
+  .about-text p strong {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .about-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  .tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 2px;
+  }
+
+  /* CONTACT SECTION */
+  .contact-section {
+    text-align: center;
+    padding: 120px 40px 160px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .contact-section .section-title {
+    margin-bottom: 24px;
+  }
+
+  .contact-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+
+  .contact-email {
+    display: block;
+    font-size: clamp(20px, 3vw, 32px);
+    font-weight: 700;
+    color: var(--cyan);
+    text-decoration: none;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(0,218,255,0.3);
+    display: inline-block;
+    padding-bottom: 8px;
+    margin-bottom: 48px;
+    transition: all 0.2s;
+  }
+  .contact-email:hover { border-color: var(--cyan); letter-spacing: 4px; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 100%;
+  }
+
+  .footer-logo {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-logo span { color: var(--cyan); }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--cyan); }
+
+  .footer-copy {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.15);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* YOUTUBE EMBED */
+  .yt-wrap {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .yt-wrap iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin-bottom: 40px;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 0 20px 60px; }
+    .hero-waves { display: none; }
+    .hero-stats { display: none; }
+    section { padding: 80px 20px; }
+    .mixes-inner, .about-inner { padding: 0 20px; }
+    .cycling-grid { grid-template-columns: 1fr; }
+    .about-inner { grid-template-columns: 1fr; }
+    .cycling-cta { padding: 32px; }
+    footer { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Ronnie<span>Z</span></a>
+  <ul class="nav-links">
+    <li><a href="#mixes">Mixes</a></li>
+    <li><a href="#cycling">Cycling</a></li>
+    <li><a href="#podcast">Podcast</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Animated waveform -->
+  <div class="hero-waves" id="heroWaves"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">DJ · Indoor Cycling · Podcast</div>
+    <h1 class="hero-title">
+      <span class="outline">Music</span>
+      <em>To Make</em>
+      You Stronger
+    </h1>
+    <p class="hero-sub">Mainstage energy for your toughest workouts. Weekly mixes, live cycling classes, and a podcast that never lets up.</p>
+    <div class="hero-actions">
+      <a href="#mixes" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2l10 6-10 6V2z"/></svg>
+        Listen Now
+      </a>
+      <a href="#cycling" class="btn-ghost">Join a Class</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">211</div>
+      <div class="hero-stat-label">Episodes</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">3+</div>
+      <div class="hero-stat-label">Years Running</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">60<span style="font-size:24px">min</span></div>
+      <div class="hero-stat-label">Per Mix</div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">New Mix Every Week</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Indoor Cycling · Fort Collins</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">211 Episodes Strong</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Music To Make You Stronger</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">High Energy · No Interruptions</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">New Mix Every Week</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Indoor Cycling · Fort Collins</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">211 Episodes Strong</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">Music To Make You Stronger</span>
+    <span class="ticker-item ticker-sep">✦</span>
+    <span class="ticker-item">High Energy · No Interruptions</span>
+    <span class="ticker-item ticker-sep">✦</span>
+  </div>
+</div>
+
+<!-- MIXES SECTION -->
+<div class="mixes-section" id="mixes">
+  <div class="mixes-inner">
+    <div class="reveal">
+      <div class="section-label">Latest Drops</div>
+      <h2 class="section-title">The Mixes</h2>
+    </div>
+
+    <!-- Buzzsprout embed for latest episode -->
+    <div class="reveal buzzsprout-embed">
+      <iframe src="https://www.buzzsprout.com/2032435?client_source=large_player&iframe=true&referrer=https://www.buzzsprout.com/2032435/podcast/embed" loading="lazy" width="100%" height="375" frameborder="0" scrolling="no" title="Music to Make you Stronger"></iframe>
+    </div>
+
+    <!-- Recent episodes grid -->
+    <div class="episode-grid reveal">
+      <a href="https://www.musictomakeyoustronger.com/2032435/episodes/18772305" target="_blank" class="episode-card">
+        <div class="episode-num">EP. 211 · MAR 1, 2026 · 57:34</div>
+        <div class="episode-title">High Energy DJ Mix | Workout / Indoor Cycling / HIIT</div>
+        <div class="episode-meta"><span>Club Energy</span><span>Tech House</span><span>Pop Remixes</span></div>
+      </a>
+      <a href="https://www.musictomakeyoustronger.com/2032435/episodes/18728450" target="_blank" class="episode-card">
+        <div class="episode-num">EP. 210 · FEB 22, 2026 · 59:30</div>
+        <div class="episode-title">High Energy Workout / Indoor Cycling Mix</div>
+        <div class="episode-meta"><span>Gym</span><span>Running</span><span>HIIT</span></div>
+      </a>
+      <a href="https://www.musictomakeyoustronger.com/2032435/episodes/18690736" target="_blank" class="episode-card">
+        <div class="episode-num">EP. 209 · FEB 15, 2026 · 58:17</div>
+        <div class="episode-title">High Energy Workout / Indoor Cycling Mix</div>
+        <div class="episode-meta"><span>Electronic</span><span>Dance</span><span>High BPM</span></div>
+      </a>
+      <a href="https://www.musictomakeyoustronger.com/2032435/episodes/18646715" target="_blank" class="episode-card">
+        <div class="episode-num">EP. 208 · FEB 8, 2026 · 1:00:17</div>
+        <div class="episode-title">High Energy Workout / Indoor Cycling Mix</div>
+        <div class="episode-meta"><span>Non-Stop</span><span>Seamless Mix</span><span>60 Min</span></div>
+      </a>
+    </div>
+
+    <a href="https://www.musictomakeyoustronger.com" target="_blank" class="listen-all reveal">
+      All 211 Episodes →
+    </a>
+  </div>
+</div>
+
+<!-- CYCLING SECTION -->
+<section class="cycling-section" id="cycling">
+  <div class="reveal">
+    <div class="section-label">Fort Collins, CO</div>
+    <h2 class="section-title">Indoor<br>Cycling</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="cycling-grid reveal">
+    <div class="cycling-feature">
+      <span class="cycling-icon">⚡</span>
+      <div class="cycling-feature-title">Live Power Metrics</div>
+      <p class="cycling-feature-text">Every rider's watts, RPM, and output tracked in real time on the leaderboard. No guessing — just data that pushes you harder.</p>
+    </div>
+    <div class="cycling-feature">
+      <span class="cycling-icon">🎵</span>
+      <div class="cycling-feature-title">DJ-Curated Soundtrack</div>
+      <p class="cycling-feature-text">Every class is scored to an original mix built specifically for the intervals. The music doesn't just play — it drives the ride.</p>
+    </div>
+    <div class="cycling-feature">
+      <span class="cycling-icon">📊</span>
+      <div class="cycling-feature-title">Post-Ride Recap</div>
+      <p class="cycling-feature-text">Your stats hit your inbox the moment class ends. Calories, average watts, distance, lifetime totals — and a link to replay the mix.</p>
+    </div>
+    <div class="cycling-feature">
+      <span class="cycling-icon">🏆</span>
+      <div class="cycling-feature-title">Competitive Energy</div>
+      <p class="cycling-feature-text">A room full of riders, a live leaderboard, and a DJ who knows how to build a moment. It's a class that feels like a show.</p>
+    </div>
+  </div>
+
+  <div class="cycling-cta reveal">
+    <div class="cycling-cta-text">Ready to <span>Clip In?</span></div>
+    <a href="mailto:ronnie@rjzproductions.com" class="btn-primary">Contact for Schedule</a>
+  </div>
+</section>
+
+<!-- PODCAST SECTION -->
+<div class="about-section" id="podcast" style="background: #060608;">
+  <div class="about-inner" style="grid-template-columns: 1fr 1.2fr; align-items:start;">
+    <div class="reveal">
+      <div class="section-label">Weekly · Since 2022</div>
+      <h2 class="section-title" style="margin-bottom:24px;">The<br>Podcast</h2>
+      <div class="divider"></div>
+      <p style="font-size:20px; font-weight:300; color:rgba(255,255,255,0.5); line-height:1.7; letter-spacing:0.5px; margin-bottom:24px;">
+        <strong style="color:#fff; font-weight:700;">Music To Make You Stronger</strong> — 60 minutes of seamless, high-energy electronic and dance. No interruptions. No track skipping. Just relentless momentum for the gym, the track, or the bike.
+      </p>
+      <p style="font-size:16px; font-weight:300; color:rgba(255,255,255,0.35); line-height:1.7; letter-spacing:0.5px; margin-bottom:40px;">
+        New episode every week. Available on Apple Podcasts, Spotify, and everywhere you listen.
+      </p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="https://podcasts.apple.com/us/podcast/music-to-make-you-stronger/id1624296742" target="_blank" class="btn-ghost" style="font-size:11px; padding:12px 20px;">Apple Podcasts</a>
+        <a href="https://www.musictomakeyoustronger.com" target="_blank" class="btn-ghost" style="font-size:11px; padding:12px 20px;">All Episodes</a>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex; flex-direction:column; gap:2px;">
+      <!-- Podcast art + subscribe embed -->
+      <div style="background:#0d0d10; border:1px solid rgba(255,255,255,0.07); border-radius:4px; overflow:hidden;">
+        <iframe src="https://www.buzzsprout.com/2032435?client_source=small_player&iframe=true&referrer=https://www.buzzsprout.com/2032435/podcast/embed" loading="lazy" width="100%" height="200" frameborder="0" scrolling="no" title="Music to Make you Stronger"></iframe>
+      </div>
+      <div style="background:#0d0d10; border:1px solid rgba(255,255,255,0.07); padding:28px; border-radius:4px;">
+        <div style="font-size:10px; color:rgba(255,255,255,0.25); letter-spacing:3px; text-transform:uppercase; margin-bottom:16px; font-family:'DM Mono',monospace;">Support the Show</div>
+        <p style="font-size:15px; color:rgba(255,255,255,0.4); line-height:1.6; margin-bottom:20px; font-weight:300;">If a mix helped you smash your workout, the best way to say thanks is to subscribe and share.</p>
+        <a href="https://buymeacoffee.com/ronniez" target="_blank" class="btn-ghost" style="font-size:11px; padding:10px 20px; width:100%; justify-content:center;">☕ Buy Me a Coffee</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT SECTION -->
+<div class="about-section" id="about">
+  <div class="about-inner">
+    <div class="reveal">
+      <!-- Photo placeholder -->
+      <div class="photo-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Photo Coming Soon</span>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="section-label">About</div>
+      <h2 class="section-title" style="margin-bottom:32px;">Ronnie<br><em style="color:var(--cyan); font-style:italic;">Z</em></h2>
+      <p>Based in <strong>Fort Collins, Colorado</strong>, RonnieZ has been building energy through music since long before the first podcast episode dropped.</p>
+      <p>Every week since 2022 — without missing a beat — a new mix lands. <strong>211 episodes</strong> of seamless, high-energy DJ sets built specifically for people who train hard.</p>
+      <p>The indoor cycling classes bring it live — <strong>real power meters, real competition, real music</strong>. A room where the DJ and the rider share the same moment.</p>
+      <div class="about-tags">
+        <span class="tag">DJ</span>
+        <span class="tag">Indoor Cycling</span>
+        <span class="tag">Podcast Host</span>
+        <span class="tag">Fort Collins, CO</span>
+        <span class="tag">Tech House</span>
+        <span class="tag">Electronic</span>
+        <span class="tag">Dance</span>
+        <span class="tag">Weekly Since 2022</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section" id="contact">
+  <div class="reveal">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Book.<br>Collaborate.<br><em style="color:var(--cyan); font-style:italic;">Connect.</em></h2>
+    <p class="contact-sub">For cycling class inquiries, DJ bookings, podcast collaborations, or anything else — reach out directly.</p>
+    <a href="mailto:ronnie@rjzproductions.com" class="contact-email">ronnie@rjzproductions.com</a>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="https://www.youtube.com/@ronniezinthemix" target="_blank" class="btn-ghost">YouTube</a>
+      <a href="https://www.musictomakeyoustronger.com" target="_blank" class="btn-ghost">Podcast</a>
+      <a href="https://buymeacoffee.com/ronniez" target="_blank" class="btn-ghost">Support</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ronnie<span>Z</span></div>
+  <ul class="footer-links">
+    <li><a href="#mixes">Mixes</a></li>
+    <li><a href="#cycling">Cycling</a></li>
+    <li><a href="#podcast">Podcast</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://ronniezim.github.io/legal/" target="_blank">Legal</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 RJZ Productions · Fort Collins, CO</div>
+</footer>
+
+<script>
+  // Generate waveform bars
+  const wavesEl = document.getElementById('heroWaves');
+  const barCount = 80;
+  for (let i = 0; i < barCount; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'wave-bar';
+    const h = Math.floor(Math.random() * 70 + 15);
+    const dur = (Math.random() * 1.5 + 0.8).toFixed(2);
+    const delay = (Math.random() * 2).toFixed(2);
+    bar.style.setProperty('--h', h + '%');
+    bar.style.setProperty('--dur', dur + 's');
+    bar.style.setProperty('--delay', delay + 's');
+    wavesEl.appendChild(bar);
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav background on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(6,6,8,0.97)';
+      nav.style.backdropFilter = 'blur(12px)';
+      nav.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+    } else {
+      nav.style.background = 'linear-gradient(to bottom, rgba(6,6,8,0.95), transparent)';
+      nav.style.backdropFilter = 'blur(0px)';
+      nav.style.borderBottom = 'none';
+    }
+  });
+</script>
+</body>
+</html>
